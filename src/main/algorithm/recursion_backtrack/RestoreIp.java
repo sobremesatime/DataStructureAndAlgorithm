@@ -20,6 +20,7 @@ public class RestoreIp {
     }
 
     public void dfs(String s, int segIndex, int segStart) {
+        // 如果找到了 4 段 IP 地址并且遍历完了字符串，那么就是一种答案
         if (segIndex == SEG_COUNT) {
             if (segStart == s.length()) {
                 StringBuilder stringBuilder = new StringBuilder();
@@ -32,6 +33,7 @@ public class RestoreIp {
             }
             return;
         }
+        //没分完片段就用完字符串，提前回溯
         if (segStart == s.length()){
             return;
         }

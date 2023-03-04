@@ -15,12 +15,16 @@ public class TreeAlgorithm {
     public void testBiTree() {
         int[] preorder = {3, 9, 20, 15, 7};
         int[] inorder = {9, 3, 15, 20, 7};
+        Integer[] arrays = new Integer[]{2, 3, 5, 6, 7, 9 ,8, 0};
         TreeNode root = buildTree_prein(preorder, inorder);
         TreeTraverse treeTraverse = new TreeTraverse();
         treeTraverse.levelOrderTraverse(root);
         System.out.println("\n" + treeDepth(root));
         System.out.println(printTree(root));
         System.out.println(nodeCount(root));
+        List<Integer> list = new ArrayList<>();
+        list = Arrays.asList(arrays);
+        int[] res = list.stream().mapToInt(Integer::intValue).toArray();
     }
 
     //创建二叉树
@@ -145,22 +149,56 @@ public class TreeAlgorithm {
             return searchBST(root.right, key);
     }
 
-    //
-    public TreeNode treeToDoublyList(TreeNode root){
-        TreeNode pre = null, head = null;
-        dfs(root, pre, head);
+    //二叉搜索树与双向链表
+    TreeNode pre = null;
+    TreeNode head = null;
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        if (pRootOfTree == null)
+            return null;
+        Convert(pRootOfTree.left);
+        if(pre == null){
+            head = pRootOfTree;
+            pre = pRootOfTree;
+        }
+        else{
+            pre.right = pRootOfTree;
+            pRootOfTree.left = pre;
+            pre = pRootOfTree;
+        }
+        Convert(pRootOfTree.right);
         return head;
     }
-    public void dfs(TreeNode root, TreeNode pre, TreeNode head){
-        if (root != null){
-            dfs(root.left, pre, head);
-            if (pre != null)
-                pre.right = root;
-            else
-                head = root;
-            root.left = pre;
-            pre = root;
-            dfs(root.right, pre, head);
+
+    //二叉树的线索化
+
+    //判断平衡二叉树
+    public boolean isBalanced(TreeNode root){
+        if (root == null)
+            return true;
+        else
+            return Math.abs(treeDepth(root.left) - treeDepth(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    //二叉树的右视图
+    public int[] solve (int[] xianxu, int[] zhongxu) {
+        //先序和中序构建二叉树
+        TreeNode root = buildTree_prein(xianxu, zhongxu);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        List<Integer> res = new ArrayList<>();
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            for (int i = 0; i < size; i++){
+                TreeNode temp = queue.poll();
+                if (i == size - 1){
+                    res.add(temp.val);
+                }
+                if (temp.left != null)
+                    queue.add(temp.left);
+                if (temp.right != null)
+                    queue.add(temp.right);
+            }
         }
+        return res.stream().mapToInt(Integer::intValue).toArray();
     }
 }

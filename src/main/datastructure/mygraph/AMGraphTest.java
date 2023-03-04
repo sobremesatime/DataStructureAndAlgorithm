@@ -12,7 +12,6 @@ public class AMGraphTest {
         for (String str: vexs) {
             graph.insertVertex(str);
         }
-
         graph.insertArc_undirected(0, 1, 1);
         graph.insertArc_undirected(0, 2, 2);
         graph.insertArc_undirected(0, 3, 3);
@@ -50,7 +49,7 @@ public class AMGraphTest {
         graph.insertArc_directed(1, 4, 1);
 
         //拓扑排序
-        System.out.println("\n拓扑排序");
+        System.out.println("拓扑排序");
         int[] result = new int[graph.vexnum];
         graph.ToPologicalSort(graph, result);
         System.out.println(Arrays.toString(result));
@@ -77,7 +76,7 @@ public class AMGraphTest {
         graph.insertArc_undirected(1, 4, 4);
         //最小生成树
         //初始顶点
-        String v0 = "A";
+        String v0 = "B";
         graph.miniSpanTree_Prim(graph, v0);
     }
 }

@@ -27,6 +27,7 @@ public class KMP {
         return j == t.length() - 1 ? i - t.length() : -1;
     }
 
+    //当匹配失效时，得到比较的位置
     public int[] getNext(String t) {
         int i = 0, j = -1;
         int[] next = new int[t.length()];

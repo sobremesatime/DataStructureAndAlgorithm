@@ -6,21 +6,27 @@ import java.util.*;
 public class AMGraph {
     public static final int MAX_INT = 32767;
     //点的名称v0, v1, v2.....
-    List<String> vexs;
+    public List<String> vexs;
     //邻接矩阵
-    int[][] arcs;
+    public int[][] arcs;
     //点的数量， 和边的数量
-    int vexnum, arcnum;
+    public int vexnum, arcnum;
     //是否访问过该点
-    boolean[] visited;
+    public boolean[] visited;
 
     //图的初始化
     public AMGraph(int vexnum) {
         this.vexs = new ArrayList<>(vexnum);
         this.arcs = new int[vexnum][vexnum];
         this.visited = new boolean[vexnum];
-        this.vexnum = vexnum;
+        this.vexnum = 0;
         this.arcnum = 0;
+        //初始化矩阵的边权值
+        for (int i = 0; i < vexnum; i++) {
+            for (int j = 0; j < vexnum; j++) {
+                this.arcs[i][j] = MAX_INT;
+            }
+        }
     }
 
 
@@ -41,7 +47,7 @@ public class AMGraph {
             }
         }
 
-        for (int i = 0; i < G.vexnum; i++) {
+        for (int i = 0; i < G.arcnum; i++) {
             String v1 = scanner.nextLine();
             String v2 = scanner.nextLine();
             int weight = scanner.nextInt();
@@ -52,7 +58,7 @@ public class AMGraph {
     //图的显示
     public void showAMGraph() {
         for (int[] ints : arcs) {
-            System.out.println(ints);
+            System.out.println(Arrays.toString(ints));
         }
     }
 
@@ -119,7 +125,7 @@ public class AMGraph {
         queue.add(v);
         while (!queue.isEmpty()) {
             int u = queue.poll();
-            for (int w = G.getFirstNeighbor(G, v); w >= 0; w = G.getNextNeighbor(G, v, w)) {
+            for (int w = G.getFirstNeighbor(G, u); w >= 0; w = G.getNextNeighbor(G, u, w)) {
                 if (!visited[w]) {
                     System.out.printf(G.vexs.get(w));
                     G.visited[w] = true;
@@ -132,22 +138,22 @@ public class AMGraph {
     //拓扑排序_有向无环图
     public void ToPologicalSort(AMGraph G, int[] topo) {
         int[] indegree = new int[G.vexnum];
-        G.findInDegree(G, indegree);
+        findInDegree(G, indegree);
         Deque<Integer> stack = new ArrayDeque<>();
-        for (int i = 0; i < indegree.length; i++) {
+        for (int i = 0; i < G.vexnum; i++){
             if (indegree[i] == 0)
                 stack.push(i);
         }
-        int count = 0;
+        int  count = 0;
         while (!stack.isEmpty()){
             int vertex = stack.pop();
+            topo[count++] = vertex;
             for (int w = G.getFirstNeighbor(G, vertex); w >= 0; w = G.getNextNeighbor(G, vertex, w)){
                 indegree[w]--;
                 if (indegree[w] == 0)
-                    stack.push(w);;
+                    stack.push(w);
             }
         }
-
     }
 
     //求出各顶点的入度
@@ -195,7 +201,7 @@ public class AMGraph {
     //求出V-U集合中最小边的顶点
     public int minPrim(CloseEdge[] closeEdges){
         int k = 0;
-        //找到根顶点
+        //V-U集合初始最小顶点
         while (closeEdges[k].adjvex == null)
             k++;
         //V-U集合中最小边的顶点
@@ -237,7 +243,7 @@ public class AMGraph {
             int v = v0;
             //v0->vi的最小边
             for (int w = 0; w < n; w++) {
-                if (!S[w] && D[w] < G.MAX_INT){
+                if (!S[w] && D[w] < min){
                     v = w;
                     min = D[w];
                 }

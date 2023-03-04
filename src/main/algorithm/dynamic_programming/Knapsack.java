@@ -127,8 +127,9 @@ public class Knapsack {
     public int maxValueComplete_opt(int N, int V, int[] w, int[] v){
         int[] dp = new int[V + 1];
         for (int i = 1; i <= N; i++){
-            for (int j = 1; j <= w[i]; j++){
-                dp[j] = Math.max(dp[j - w[i]] + v[i], dp[j]);
+            for (int j = 1; j <= V; j++){
+                if (w[i] <= j)
+                    dp[j] = Math.max(dp[j - w[i]] + v[i], dp[j]);
             }
         }
         return dp[V];

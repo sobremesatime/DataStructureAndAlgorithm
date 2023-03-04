@@ -3,9 +3,9 @@ package datastructure.mygraph;
 //记录从U集合到V-U集合的最小权值边
 public class CloseEdge implements Comparable<CloseEdge>{
     //最小边在U集合中的那个顶点
-    String adjvex;
+    public String adjvex;
     //最小边上的权值
-    int lowcost;
+    public int lowcost;
 
     public CloseEdge(String adjvex, int lowcost) {
         this.adjvex = adjvex;
